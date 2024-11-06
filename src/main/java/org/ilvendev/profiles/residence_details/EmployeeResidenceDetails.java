@@ -1,21 +1,18 @@
-package org.ilvendev.profiles;
+package org.ilvendev.profiles.residence_details;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.ilvendev.profiles.employee.Employee;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "employee_residence_details")
 public class EmployeeResidenceDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int residenceId;
+    private int id;
     private String address;
     private String city;
     private String state;

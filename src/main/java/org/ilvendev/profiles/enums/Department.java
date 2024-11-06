@@ -1,4 +1,4 @@
-package org.ilvendev.profiles;
+package org.ilvendev.profiles.enums;
 
 public enum Department {
     IT,

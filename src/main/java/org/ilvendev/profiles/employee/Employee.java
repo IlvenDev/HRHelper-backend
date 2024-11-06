@@ -1,23 +1,25 @@
-package org.ilvendev.profiles;
+package org.ilvendev.profiles.employee;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.ilvendev.attendance.AttendanceTimes;
+import org.ilvendev.attendance.Leaves;
+import org.ilvendev.profiles.emergency_contact.EmergencyContact;
+import org.ilvendev.profiles.job_details.EmployeeJobDetails;
+import org.ilvendev.profiles.residence_details.EmployeeResidenceDetails;
 
 import java.sql.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "employees")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int employeeId;
+    private int id;
     private String name;
     private String lastname;
     private String pesel;
@@ -38,5 +40,11 @@ public class Employee {
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST)
     private EmployeeResidenceDetails residenceDetails;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
+    private Set<AttendanceTimes> attendanceTimes;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
+    private Set<Leaves> leaves;
 
 }

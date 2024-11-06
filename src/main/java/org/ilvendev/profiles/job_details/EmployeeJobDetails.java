@@ -1,23 +1,22 @@
-package org.ilvendev.profiles;
+package org.ilvendev.profiles.job_details;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.ilvendev.profiles.enums.Department;
+import org.ilvendev.profiles.enums.EmploymentType;
+import org.ilvendev.profiles.employee.Employee;
 
 import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "employee_job_details")
 public class EmployeeJobDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int jobDetailsId;
+    private int id;
     private String jobTitle;
     private String jobDescription;
 

@@ -1,4 +1,4 @@
-package org.ilvendev.profiles.enums;
+package org.ilvendev.enums;
 
 public enum LeaveStatus {
     PENDING,

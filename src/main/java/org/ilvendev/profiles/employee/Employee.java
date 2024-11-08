@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.ilvendev.attendance.AttendanceTimes;
 import org.ilvendev.attendance.Leaves;
+import org.ilvendev.payroll.EmployeePaymentDetails;
 import org.ilvendev.profiles.emergency_contact.EmergencyContact;
 import org.ilvendev.profiles.job_details.EmployeeJobDetails;
 import org.ilvendev.profiles.residence_details.EmployeeResidenceDetails;
@@ -46,5 +47,8 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
     private Set<Leaves> leaves;
+
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST)
+    private EmployeePaymentDetails employeePaymentDetails;
 
 }

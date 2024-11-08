@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ilvendev.profiles.employee.Employee;
-import org.ilvendev.profiles.enums.LeaveStatus;
-import org.ilvendev.profiles.enums.LeaveType;
+import org.ilvendev.enums.LeaveStatus;
+import org.ilvendev.enums.LeaveType;
 
 import java.sql.Date;
 

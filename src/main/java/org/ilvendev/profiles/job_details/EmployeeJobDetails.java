@@ -2,8 +2,8 @@ package org.ilvendev.profiles.job_details;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.ilvendev.profiles.enums.Department;
-import org.ilvendev.profiles.enums.EmploymentType;
+import org.ilvendev.enums.Department;
+import org.ilvendev.enums.EmploymentType;
 import org.ilvendev.profiles.employee.Employee;
 
 import java.sql.Date;

@@ -1,11 +1,11 @@
-package org.ilvendev.payroll;
+package org.ilvendev.database.payroll;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ilvendev.enums.PayFrequency;
-import org.ilvendev.profiles.employee.Employee;
+import org.ilvendev.database.enums.PayFrequency;
+import org.ilvendev.database.profiles.Employee;
 
 import java.math.BigDecimal;
 import java.util.Currency;

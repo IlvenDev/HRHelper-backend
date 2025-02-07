@@ -1,13 +1,10 @@
-package org.ilvendev.profiles.employee;
+package org.ilvendev.database.profiles;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.ilvendev.attendance.AttendanceTimes;
-import org.ilvendev.attendance.Leaves;
-import org.ilvendev.payroll.EmployeePaymentDetails;
-import org.ilvendev.profiles.emergency_contact.EmergencyContact;
-import org.ilvendev.profiles.job_details.EmployeeJobDetails;
-import org.ilvendev.profiles.residence_details.EmployeeResidenceDetails;
+import org.ilvendev.database.attendance.AttendanceTimes;
+import org.ilvendev.database.attendance.Leaves;
+import org.ilvendev.database.payroll.EmployeePaymentDetails;
 
 import java.sql.Date;
 import java.util.Set;

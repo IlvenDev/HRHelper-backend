@@ -1,12 +1,12 @@
-package org.ilvendev.attendance;
+package org.ilvendev.database.attendance;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ilvendev.profiles.employee.Employee;
-import org.ilvendev.enums.LeaveStatus;
-import org.ilvendev.enums.LeaveType;
+import org.ilvendev.database.profiles.Employee;
+import org.ilvendev.database.enums.LeaveStatus;
+import org.ilvendev.database.enums.LeaveType;
 
 import java.sql.Date;
 

@@ -1,8 +1,8 @@
-package org.ilvendev.attendance;
+package org.ilvendev.database.attendance;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.ilvendev.profiles.employee.Employee;
+import org.ilvendev.database.profiles.Employee;
 
 import java.sql.Time;
 

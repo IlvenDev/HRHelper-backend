@@ -1,4 +1,4 @@
-package org.ilvendev.enums;
+package org.ilvendev.database.enums;
 
 public enum LeaveType {
     SICK_LEAVE,

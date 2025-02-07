@@ -1,10 +1,10 @@
-package org.ilvendev.payroll;
+package org.ilvendev.database.payroll;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ilvendev.enums.PaymentStatus;
+import org.ilvendev.database.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;

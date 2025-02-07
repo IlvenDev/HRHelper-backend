@@ -1,8 +1,7 @@
-package org.ilvendev.profiles.emergency_contact;
+package org.ilvendev.database.profiles;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.ilvendev.profiles.employee.Employee;
 
 @NoArgsConstructor
 @AllArgsConstructor

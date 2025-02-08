@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface LeaveMapper {
 
-    LeaveDTO leaveToLeaveDTO (Leave leave);
+    LeaveDTO mapToDTO (Leave leave);
 
-    Leave leaveDTOToLeave (LeaveDTO leaveDTO);
+    Leave mapToLeave (LeaveDTO leaveDTO);
 }

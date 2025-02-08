@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface AttendanceTimeMapper {
 
-    AttendanceTimeDTO attendanceTimeToAttendanceTimeDTO (AttendanceTime attendanceTime);
+    AttendanceTimeDTO mapToDTO (AttendanceTime attendanceTime);
 
-    AttendanceTime attendanceTimeDTOToAttendanceTime (AttendanceTimeDTO attendanceTimeDTO);
+    AttendanceTime mapToAttendanceTime (AttendanceTimeDTO attendanceTimeDTO);
 }

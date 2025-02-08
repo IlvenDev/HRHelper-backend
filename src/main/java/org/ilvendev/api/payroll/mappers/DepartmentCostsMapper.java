@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface DepartmentCostsMapper {
 
-    DepartmentCostsDTO departmentCostsToDepartmentCostsDTO (DepartmentCosts departmentCosts);
+    DepartmentCostsDTO mapToDTO (DepartmentCosts departmentCosts);
 
-    DepartmentCosts departmentCostsDTOToDepartmentCosts (DepartmentCostsDTO departmentCostsDTO);
+    DepartmentCosts mapToDepartmentCosts (DepartmentCostsDTO departmentCostsDTO);
 }

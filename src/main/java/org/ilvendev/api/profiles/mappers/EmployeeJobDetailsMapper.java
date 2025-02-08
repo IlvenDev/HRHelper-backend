@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface EmployeeJobDetailsMapper {
 
-    EmployeeJobDetailsDTO employeeJobDetailsToEmployeeJobDetailsDTO(EmployeeJobDetails employeeJobDetails);
+    EmployeeJobDetailsDTO mapToDTO (EmployeeJobDetails employeeJobDetails);
 
-    EmployeeJobDetails employeeJobDetailsDTOToEmployeeJobDetails(EmployeeJobDetailsDTO employeeJobDetailsDTO);
+    EmployeeJobDetails mapToEmployeeJobDetails (EmployeeJobDetailsDTO employeeJobDetailsDTO);
 }

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface EmergencyContactMapper {
 
-    EmergencyContactDTO emergencyContactToEmergencyContactDTO (EmergencyContact emergencyContact);
+    EmergencyContactDTO mapToDTO (EmergencyContact emergencyContact);
 
-    EmergencyContact emergencyContactDTOToEmergencyContact (EmergencyContactDTO emergencyContactDTO);
+    EmergencyContact mapToEmergencyContact (EmergencyContactDTO emergencyContactDTO);
 }

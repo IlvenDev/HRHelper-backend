@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ilvendev.database.profiles.Employee;
-import org.ilvendev.database.enums.LeaveStatus;
-import org.ilvendev.database.enums.LeaveType;
+import org.ilvendev.enums.LeaveStatus;
+import org.ilvendev.enums.LeaveType;
 
 import java.sql.Date;
 
@@ -15,7 +15,7 @@ import java.sql.Date;
 @Data
 @Entity
 @Table(name = "leaves")
-public class Leaves {
+public class Leave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

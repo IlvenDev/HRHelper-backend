@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ilvendev.database.enums.PayFrequency;
+import org.ilvendev.enums.PayFrequency;
 import org.ilvendev.database.profiles.Employee;
 
 import java.math.BigDecimal;
@@ -32,6 +32,6 @@ public class EmployeePaymentDetails {
     private Employee employee;
 
     @OneToMany(mappedBy = "employeePaymentDetails", cascade = CascadeType.PERSIST)
-    private Set<Payments> payments;
+    private Set<Payment> payments;
 
 }

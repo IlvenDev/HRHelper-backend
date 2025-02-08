@@ -1,4 +1,4 @@
-package org.ilvendev.database.enums;
+package org.ilvendev.enums;
 
 public enum CostType {
     SALARIES,

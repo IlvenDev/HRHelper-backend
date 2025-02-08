@@ -11,7 +11,7 @@ import java.sql.Time;
 @Data
 @Entity
 @Table(name = "attendance_times")
-public class AttendanceTimes {
+public class AttendanceTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

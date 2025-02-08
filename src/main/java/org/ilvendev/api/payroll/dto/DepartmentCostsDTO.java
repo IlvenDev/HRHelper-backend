@@ -1,8 +1,8 @@
 package org.ilvendev.api.payroll.dto;
 
 import lombok.Data;
-import org.ilvendev.database.enums.CostType;
-import org.ilvendev.database.enums.Department;
+import org.ilvendev.enums.CostType;
+import org.ilvendev.enums.Department;
 
 import java.math.BigDecimal;
 import java.util.Date;

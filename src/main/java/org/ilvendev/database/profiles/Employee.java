@@ -2,8 +2,8 @@ package org.ilvendev.database.profiles;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.ilvendev.database.attendance.AttendanceTimes;
-import org.ilvendev.database.attendance.Leaves;
+import org.ilvendev.database.attendance.AttendanceTime;
+import org.ilvendev.database.attendance.Leave;
 import org.ilvendev.database.payroll.EmployeePaymentDetails;
 
 import java.sql.Date;
@@ -40,10 +40,10 @@ public class Employee {
     private EmployeeResidenceDetails residenceDetails;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
-    private Set<AttendanceTimes> attendanceTimes;
+    private Set<AttendanceTime> attendanceTimes;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
-    private Set<Leaves> leaves;
+    private Set<Leave> leaves;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST)
     private EmployeePaymentDetails employeePaymentDetails;

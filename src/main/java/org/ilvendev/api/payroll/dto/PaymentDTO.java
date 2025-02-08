@@ -1,13 +1,13 @@
 package org.ilvendev.api.payroll.dto;
 
 import lombok.Data;
-import org.ilvendev.database.enums.PaymentStatus;
+import org.ilvendev.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class PaymentsDTO {
+public class PaymentDTO {
     private int id;
     private String bankAccountNumber;
     private BigDecimal amount;

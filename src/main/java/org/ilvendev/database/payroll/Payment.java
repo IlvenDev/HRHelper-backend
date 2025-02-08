@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ilvendev.database.enums.PaymentStatus;
+import org.ilvendev.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "payments")
-public class Payments {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

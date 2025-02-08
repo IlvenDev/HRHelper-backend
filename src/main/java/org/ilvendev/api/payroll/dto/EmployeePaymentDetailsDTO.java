@@ -2,7 +2,7 @@ package org.ilvendev.api.payroll.dto;
 
 import lombok.Data;
 import org.ilvendev.api.profiles.dto.EmployeeDTO;
-import org.ilvendev.database.enums.PayFrequency;
+import org.ilvendev.enums.PayFrequency;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -17,5 +17,5 @@ public class EmployeePaymentDetailsDTO {
     private PayFrequency payFrequency;
     private String bankAccountNumber;
     private EmployeeDTO employee;
-    private Set<PaymentsDTO> payments;
+    private Set<PaymentDTO> payments;
 }

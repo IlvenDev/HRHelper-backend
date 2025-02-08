@@ -1,4 +1,4 @@
-package org.ilvendev.api.profiles;
+package org.ilvendev.api.profiles.dto;
 
 import lombok.Data;
 

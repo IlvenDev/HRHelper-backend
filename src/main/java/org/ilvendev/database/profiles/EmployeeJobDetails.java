@@ -1,5 +1,6 @@
 package org.ilvendev.database.profiles;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.ilvendev.enums.Department;
@@ -29,6 +30,7 @@ public class EmployeeJobDetails {
     private Date employmentDate;
 
     @Temporal(TemporalType.DATE)
+    @Nullable
     private Date terminationDate;
 
     @ManyToOne

@@ -1,6 +1,6 @@
-package org.ilvendev.api.attendance.mappers;
+package org.ilvendev.api.leaves.mappers;
 
-import org.ilvendev.api.attendance.dto.LeaveDTO;
+import org.ilvendev.api.leaves.dto.LeaveDTO;
 import org.ilvendev.database.attendance.Leave;
 import org.mapstruct.Mapper;
 

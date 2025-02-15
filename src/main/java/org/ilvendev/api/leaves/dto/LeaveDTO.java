@@ -1,4 +1,4 @@
-package org.ilvendev.api.attendance.dto;
+package org.ilvendev.api.leaves.dto;
 
 import lombok.Data;
 import org.ilvendev.api.profiles.dto.EmployeeDTO;

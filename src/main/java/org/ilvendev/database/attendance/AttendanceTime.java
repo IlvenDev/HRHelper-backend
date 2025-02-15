@@ -1,10 +1,12 @@
 package org.ilvendev.database.attendance;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.ilvendev.database.profiles.Employee;
 
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,13 +16,14 @@ import java.sql.Time;
 public class AttendanceTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @Temporal(TemporalType.TIME)
-    private Time startTime;
+    private LocalTime startTime;
 
-    @Temporal(TemporalType.TIME)
-    private Time endTime;
+    @Nullable
+    private LocalTime endTime;
+
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "employeeId")

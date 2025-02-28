@@ -23,3 +23,9 @@ spring:
   h2:
     console:
       enabled: false
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+#    org.springframework.controllers: DEBUG
+    org.ilvendev.profiles.controllers: DEBUG

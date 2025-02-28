@@ -11,7 +11,7 @@ import org.ilvendev.profiles.dto.EmployeeRequest;
 import org.ilvendev.profiles.mappers.EmployeeMapper;
 import org.ilvendev.profiles.repositories.EmployeeRepository;
 import org.ilvendev.profiles.domain.Employee;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +33,7 @@ public class EmployeeService {
     // Let's go with typeahead that queries the backend. Will use debouncing on frontend and should be good
     // TODO: Add data validation
 
+    @Transactional
     public EmployeeDetailResponse createEmployee(EmployeeRequest employeeData) throws DuplicateResourceException {
         log.debug("Creating employee with data: {}", employeeData.toString());
 
@@ -48,17 +49,33 @@ public class EmployeeService {
         return employeeMapper.toDetailResponse(savedEmployee);
     }
 
-    public void updateEmployee(Integer employeeId, EmployeeRequest employeeData) throws ResourceNotFoundException {
+    @Transactional
+    public Employee updateEmployee(Integer employeeId, EmployeeRequest employeeData) {
         log.debug("Updating employee with ID: {}", employeeId);
-        if (employeeRepository.existsById(employeeId)){
-            employeeRepository.save(employeeMapper.toEntity(employeeData));
-            log.info("Employee updated successfully");
-        } else {
-            log.error("Failed updating employee");
-            throw new ResourceNotFoundException("Employee", employeeId.toString());
-        }
+
+        Employee existingEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> {
+                    log.error("Failed updating employee - ID {} not found", employeeId);
+                    return new ResourceNotFoundException("Employee", employeeId.toString());
+                });
+
+        // Update employee fields
+        existingEmployee.setName(employeeData.getName());
+        existingEmployee.setLastname(employeeData.getLastname());
+        existingEmployee.setPesel(employeeData.getPesel());
+        existingEmployee.setPhone(employeeData.getPhone());
+        existingEmployee.setEmail(employeeData.getEmail());
+        existingEmployee.setDateOfBirth(employeeData.getDateOfBirth());
+        existingEmployee.setSex(employeeData.getSex());
+
+        Employee updatedEmployee = employeeRepository.save(existingEmployee);
+
+        log.info("Employee with ID: {} updated successfully", employeeId);
+
+        return updatedEmployee;
     }
 
+    @Transactional
     public void deleteEmployee(Integer employeeId) throws ResourceNotFoundException{
         log.debug("Deleting employee with ID: {}", employeeId);
         if (employeeRepository.existsById(employeeId)){
@@ -70,11 +87,13 @@ public class EmployeeService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeList(){
         log.debug("Fetching employee list");
         return employeeMapper.toBasicResponseList(employeeRepository.findAll());
     }
 
+    @Transactional(readOnly = true)
     public EmployeeBasicResponse getEmployeeBasic(Integer employeeId) throws ResourceNotFoundException{
         log.debug("Fetching basic employee data for ID: {}", employeeId);
         Employee fetchedEmployee = employeeRepository.findById(employeeId)
@@ -84,6 +103,7 @@ public class EmployeeService {
         return employeeMapper.toBasicResponse(fetchedEmployee);
     }
 
+    @Transactional(readOnly = true)
     public EmployeeDetailResponse getEmployeeDetail(Integer employeeId) throws ResourceNotFoundException{
         log.debug("Fetching detail employee data for ID: {}", employeeId);
         Employee fetchedEmployee = employeeRepository.findById(employeeId)
@@ -93,7 +113,8 @@ public class EmployeeService {
         return employeeMapper.toDetailResponse(fetchedEmployee);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(readOnly = true)
     public EmployeeAdminResponse getEmployeeAdmin(Integer employeeId) throws ResourceNotFoundException{
         log.debug("Fetching admin employee data for ID: {}", employeeId);
         Employee fetchedEmployee = employeeRepository.findById(employeeId)
@@ -103,6 +124,7 @@ public class EmployeeService {
         return employeeMapper.toAdminResponse(fetchedEmployee);
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeByFullName(String name, String lastname){
         log.debug("Fetching employee by name {} and lastname {}", name, lastname);
         List<Employee> fetchedEmployees = employeeRepository.findByNameAndLastname(name, lastname);
@@ -113,6 +135,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeByPesel(String pesel){
         log.debug("Fetching employee by pesel {}", pesel);
         List<Employee> fetchedEmployees = employeeRepository.findByPesel(pesel);
@@ -123,6 +146,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeByPhone(String phone){
         log.debug("Fetching employee by phone {}", phone);
         List<Employee> fetchedEmployees = employeeRepository.findByPhone(phone);
@@ -133,6 +157,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeByEmail(String email){
         log.debug("Fetching employee by email {}", email);
         List<Employee> fetchedEmployees = employeeRepository.findByEmail(email);
@@ -143,6 +168,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeBySex(Character sex){
         log.debug("Fetching employee by sex {}", sex);
         List<Employee> fetchedEmployees = employeeRepository.findBySex(sex);
@@ -153,6 +179,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeByDateOfBirth(LocalDate dateOfBirth){
         log.debug("Fetching employee by date of birth {}", dateOfBirth);
         List<Employee> fetchedEmployees = employeeRepository.findByDateOfBirth(dateOfBirth);

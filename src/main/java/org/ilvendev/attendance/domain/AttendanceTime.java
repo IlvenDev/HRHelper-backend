@@ -1,6 +1,5 @@
 package org.ilvendev.attendance.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.ilvendev.profiles.domain.Employee;
@@ -9,20 +8,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "attendance_times")
 public class AttendanceTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Column(nullable = false)
     private LocalTime startTime;
-
-    @Nullable
+    @Column
     private LocalTime endTime;
-
+    @Column(nullable = false)
     private LocalDate date;
 
     @ManyToOne

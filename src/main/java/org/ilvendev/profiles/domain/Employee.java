@@ -55,6 +55,8 @@ public class Employee {
     @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private EmployeePaymentDetails employeePaymentDetails;
 
+
+    // Might be useless if we use attendanceService.
     public void addAttendanceTime(AttendanceTime attendanceTime) {
         assert attendanceTimes != null;
         attendanceTimes.add(attendanceTime);
@@ -66,5 +68,4 @@ public class Employee {
         attendanceTimes.remove(attendanceTime);
         attendanceTime.setEmployee(null);
     }
-
 }

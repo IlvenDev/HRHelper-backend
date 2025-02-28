@@ -19,15 +19,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface EmployeeMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "name")
-    @Mapping(target = "lastname")
     @Mapping(target = "attendanceTimes", ignore = true)
     @Mapping(target = "leaves", ignore = true)
     @Mapping(target = "emergencyContact", ignore = true)
     @Mapping(target = "jobDetails", ignore = true)
     @Mapping(target = "residenceDetails", ignore = true)
     @Mapping(target = "employeePaymentDetails", ignore = true)
-    @Mapping(target = "sex")
     Employee toEntity(EmployeeRequest request);
 
     EmployeeBasicResponse toBasicResponse(Employee employee);

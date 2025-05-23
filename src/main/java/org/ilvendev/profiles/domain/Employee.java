@@ -52,10 +52,6 @@ public class Employee {
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private Set<Leave> leaves = new HashSet<>();
 
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private EmployeePaymentDetails employeePaymentDetails;
-
-
     // Might be useless if we use attendanceService.
     public void addAttendanceTime(AttendanceTime attendanceTime) {
         assert attendanceTimes != null;

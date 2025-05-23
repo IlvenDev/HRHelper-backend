@@ -5,6 +5,7 @@ import org.ilvendev.attendance.dto.AttendanceTimeResponse;
 import org.ilvendev.leaves.domain.Leave;
 import org.ilvendev.leaves.dto.LeaveResponse;
 import org.ilvendev.payroll.domain.EmployeePaymentDetails;
+import org.ilvendev.payroll.dto.EmployeePaymentDetailsResponseDetail;
 import org.ilvendev.profiles.domain.EmergencyContact;
 import org.ilvendev.profiles.domain.Employee;
 import org.ilvendev.profiles.domain.EmployeeJobDetails;
@@ -24,7 +25,6 @@ public interface EmployeeMapper {
     @Mapping(target = "emergencyContact", ignore = true)
     @Mapping(target = "jobDetails", ignore = true)
     @Mapping(target = "residenceDetails", ignore = true)
-    @Mapping(target = "employeePaymentDetails", ignore = true)
     Employee toEntity(EmployeeRequest request);
 
     EmployeeBasicResponse toBasicResponse(Employee employee);
@@ -34,13 +34,11 @@ public interface EmployeeMapper {
     @Mapping(target = "emergencyContact", source = "emergencyContact")
     @Mapping(target = "jobDetails", source = "jobDetails")
     @Mapping(target = "residenceDetails", source = "residenceDetails")
-    @Mapping(target = "employeePaymentDetails", source = "employeePaymentDetails")
     EmployeeDetailResponse toDetailResponse(Employee employee);
 
     @Mapping(target = "emergencyContact", source = "emergencyContact")
     @Mapping(target = "jobDetails", source = "jobDetails")
     @Mapping(target = "residenceDetails", source = "residenceDetails")
-    @Mapping(target = "employeePaymentDetails", source = "employeePaymentDetails")
     @Mapping(target = "attendanceTimes", source = "attendanceTimes")
     @Mapping(target = "leaves", source = "leaves")
     EmployeeAdminResponse toAdminResponse(Employee employee);
@@ -48,7 +46,7 @@ public interface EmployeeMapper {
     EmergencyContactResponse toEmergencyContactResponse(EmergencyContact emergencyContact);
     EmployeeJobDetailsResponse toJobDetailsResponse(EmployeeJobDetails jobDetails);
     EmployeeResidenceDetailsResponse toResidenceDetailsResponse(EmployeeResidenceDetails residenceDetails);
-    EmployeePaymentDetailsResponse toPaymentDetailsResponse(EmployeePaymentDetails paymentDetails);
+//    EmployeePaymentDetailsResponseDetail toPaymentDetailsResponse(EmployeePaymentDetails paymentDetails);
     AttendanceTimeResponse toAttendanceTimeResponse(AttendanceTime attendanceTime);
     LeaveResponse toLeaveResponse(Leave leave);
 }

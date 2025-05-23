@@ -1,33 +1,30 @@
 package org.ilvendev.payroll.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.ilvendev.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "payments")
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String bankAccountNumber;
     private BigDecimal amount;
-    private String currency;
+    private Currency currency;
     private PaymentStatus status;
     @Temporal(TemporalType.DATE)
     private LocalDate dueDate;
+    // Timestamp might be better here, to make it clear when exactly the payment was made
     @Temporal(TemporalType.DATE)
     private LocalDate paymentDate;
-
-    @ManyToOne
-    @JoinColumn(name = "employeeBankAccount")
-    private EmployeePaymentDetails employeePaymentDetails;
 }

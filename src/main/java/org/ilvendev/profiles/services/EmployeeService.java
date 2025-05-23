@@ -11,7 +11,6 @@ import org.ilvendev.profiles.dto.EmployeeRequest;
 import org.ilvendev.profiles.mappers.EmployeeMapper;
 import org.ilvendev.profiles.repositories.EmployeeRepository;
 import org.ilvendev.profiles.domain.Employee;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,6 +84,12 @@ public class EmployeeService {
             log.error("Failed deleting employee");
             throw new ResourceNotFoundException("Employee", employeeId.toString());
         }
+    }
+
+    @Transactional
+    public Employee findById(Integer employeeId){
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString()));
     }
 
     @Transactional(readOnly = true)

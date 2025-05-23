@@ -16,9 +16,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
 
   h2:
     console:
@@ -27,5 +24,7 @@ spring:
 logging:
   level:
     org.springframework.web: DEBUG
-#    org.springframework.controllers: DEBUG
     org.ilvendev.profiles.controllers: DEBUG
+    org.ilvendev.attendance.controllers: DEBUG
+    org.ilvendev.leaves.controllers: DEBUG
+    org.ilvendev.payroll.controllers: DEBUG

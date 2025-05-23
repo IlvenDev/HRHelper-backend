@@ -34,6 +34,8 @@ public class AttendanceTimeService {
     // get from date to date (no employee)
     // get for employee from date to date
 
+    // need to add updating but only when admin
+
     // Need to add checking if exists
     @Transactional
     public AttendanceTimeResponse initializeAttendance(AttendanceTimeRequest request){

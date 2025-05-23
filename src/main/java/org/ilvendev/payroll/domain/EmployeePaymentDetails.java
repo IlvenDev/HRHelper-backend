@@ -1,9 +1,7 @@
 package org.ilvendev.payroll.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.ilvendev.enums.PayFrequency;
 import org.ilvendev.profiles.domain.Employee;
 
@@ -13,13 +11,14 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "employee_payment_details")
 public class EmployeePaymentDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String bankName;
     private BigDecimal baseSalary;
     private Currency currency;
@@ -30,8 +29,4 @@ public class EmployeePaymentDetails {
     @OneToOne
     @JoinColumn(name = "employeeId")
     private Employee employee;
-
-    @OneToMany(mappedBy = "employeePaymentDetails", cascade = CascadeType.PERSIST)
-    private Set<Payment> payments;
-
 }

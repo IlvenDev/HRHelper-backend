@@ -31,7 +31,7 @@ public class EmployeeRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
-    @Schema(description = "Employee's date of birth", example = "05.11.1997")
+    @Schema(description = "Employee's date of birth", example = "1997-11-05")
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
     @Schema(description = "Employee's sex", example = "M")

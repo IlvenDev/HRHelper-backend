@@ -69,6 +69,8 @@ public class AttendanceController {
         return attendanceTimeService.getAllRecords();
     }
 
+
+
     @GetMapping("/employee/{id}")
     @Operation(summary = "Get attendance records for a certain employee")
     public List<AttendanceTimeResponse> getForEmployee(@PathVariable("id") Integer employeeId){
@@ -76,6 +78,8 @@ public class AttendanceController {
 
         return attendanceTimeService.getForEmployee(employeeId);
     }
+
+    // TODO: Make it fucking better
 
     @GetMapping("/date")
     public List<AttendanceTimeResponse> getForDateBetween(@RequestParam LocalDate startDate,

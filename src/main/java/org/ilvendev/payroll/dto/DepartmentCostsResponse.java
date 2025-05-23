@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class DepartmentCostsDTO {
-    private int id;
+public class DepartmentCostsResponse {
+    private Integer id;
     private Department department;
     private LocalDate date;
     private BigDecimal amount;

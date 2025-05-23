@@ -4,15 +4,13 @@ import lombok.Data;
 import org.ilvendev.enums.PaymentStatus;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Currency;
 
 @Data
-public class PaymentDTO {
-    private int id;
+public class PaymentResponseBasic {
+    private Integer id;
     private String bankAccountNumber;
     private BigDecimal amount;
-    private String currency;
+    private Currency currency;
     private PaymentStatus status;
-    private LocalDate dueDate;
-    private LocalDate paymentDate;
 }

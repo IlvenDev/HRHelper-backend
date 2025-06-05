@@ -3,6 +3,7 @@ package org.ilvendev.payroll.dto;
 import lombok.Data;
 import org.ilvendev.enums.PayFrequency;
 import org.ilvendev.enums.ValueOfEnum;
+import org.ilvendev.profiles.domain.Employee;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -17,4 +18,5 @@ public class EmployeePaymentDetailsRequest {
     @ValueOfEnum(enumClass = PayFrequency.class)
     private PayFrequency payFrequency;
     private String bankAccountNumber;
+    private Employee employee;
 }

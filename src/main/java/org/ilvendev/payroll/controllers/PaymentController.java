@@ -46,7 +46,7 @@ public class PaymentController {
 
 
     // TODO: Make this work correctly in the service
-    @PostMapping("/{id}/pay")
+    @PutMapping("/{id}/pay")
     public ResponseEntity<String> makePayment(@Valid @PathVariable("id") Integer paymentId) {
         log.debug("Received make payment request");
 

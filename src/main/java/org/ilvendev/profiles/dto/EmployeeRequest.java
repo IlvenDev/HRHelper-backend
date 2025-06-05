@@ -36,4 +36,7 @@ public class EmployeeRequest {
     private LocalDate dateOfBirth;
     @Schema(description = "Employee's sex", example = "M")
     private Character sex;
+    private EmployeeJobDetailsRequest jobDetails;
+    private EmployeeResidenceDetailsRequest residenceDetails;
+    private EmergencyContactRequest emergencyContact;
 }

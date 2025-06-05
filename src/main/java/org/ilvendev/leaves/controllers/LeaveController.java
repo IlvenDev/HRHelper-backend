@@ -60,7 +60,7 @@ public class LeaveController {
     }
 
     @GetMapping("/employee/{id}")
-    public ResponseEntity<List<LeaveResponse>> getEmployeeLeaves(@Valid @RequestParam("id") Integer employeeId){
+    public ResponseEntity<List<LeaveResponse>> getEmployeeLeaves(@Valid @PathVariable("id") Integer employeeId){
         log.debug("Received get employee leaves request");
 
         return ResponseEntity.ok(leaveService.getEmployeeLeaves(employeeId));

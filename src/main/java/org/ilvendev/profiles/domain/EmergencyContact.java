@@ -17,8 +17,6 @@ public class EmergencyContact {
     @Column(nullable = false)
     private String lastname;
     @Column(nullable = false)
-    private String relationship; // This could use a new validation table "relationships" and a ENUM
-    @Column(nullable = false)
     private String phone;
 
     @OneToOne

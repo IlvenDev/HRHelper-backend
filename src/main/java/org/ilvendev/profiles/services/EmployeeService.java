@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilvendev.exceptions.resource_exceptions.DuplicateResourceException;
 import org.ilvendev.exceptions.resource_exceptions.ResourceNotFoundException;
+import org.ilvendev.profiles.domain.EmergencyContact;
+import org.ilvendev.profiles.domain.EmployeeJobDetails;
+import org.ilvendev.profiles.domain.EmployeeResidenceDetails;
 import org.ilvendev.profiles.dto.EmployeeAdminResponse;
 import org.ilvendev.profiles.dto.EmployeeBasicResponse;
 import org.ilvendev.profiles.dto.EmployeeDetailResponse;
@@ -34,19 +37,35 @@ public class EmployeeService {
 
     @Transactional
     public EmployeeDetailResponse createEmployee(EmployeeRequest employeeData) throws DuplicateResourceException {
-        log.debug("Creating employee with data: {}", employeeData.toString());
+        log.debug("Creating employee with data: {}", employeeData);
 
-        Employee employee = employeeMapper.toEntity(employeeData);
-
-        if (employeeRepository.existsByEmail(employee.getEmail())){
-            throw new DuplicateResourceException("Employee", employee.getEmail());
+        if (employeeRepository.existsByEmail(employeeData.getEmail())) {
+            throw new DuplicateResourceException("Employee", employeeData.getEmail());
         }
 
-        Employee savedEmployee = employeeRepository.save(employee);
+        // Create base employee
+        Employee employee = employeeMapper.toEntity(employeeData);
 
+        // Map and link job details
+        EmployeeJobDetails jobDetails = employeeMapper.toJobDetailsEntity(employeeData.getJobDetails());
+        jobDetails.setEmployee(employee);  // 🔥 Critical line
+        employee.setJobDetails(jobDetails);
+
+        // Map and link residence
+        EmployeeResidenceDetails residence = employeeMapper.toResidenceDetailsEntity(employeeData.getResidenceDetails());
+        residence.setEmployee(employee);  // 🔥 Critical line
+        employee.setResidenceDetails(residence);
+
+        // Map and link emergency contact
+        EmergencyContact emergencyContact = employeeMapper.toEmergencyContactEntity(employeeData.getEmergencyContact());
+        emergencyContact.setEmployee(employee);  // 🔥 Critical line
+        employee.setEmergencyContact(emergencyContact);
+
+        Employee savedEmployee = employeeRepository.save(employee);
         log.info("Created employee with ID: {}", savedEmployee.getId());
         return employeeMapper.toDetailResponse(savedEmployee);
     }
+
 
     @Transactional
     public Employee updateEmployee(Integer employeeId, EmployeeRequest employeeData) {

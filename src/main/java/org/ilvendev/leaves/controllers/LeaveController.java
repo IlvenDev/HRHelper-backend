@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilvendev.enums.LeaveStatus;
+import org.ilvendev.enums.LeaveType;
 import org.ilvendev.leaves.dto.LeaveRequest;
 import org.ilvendev.leaves.dto.LeaveResponse;
 import org.ilvendev.leaves.services.LeaveService;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -52,7 +55,7 @@ public class LeaveController {
         return ResponseEntity.ok(String.format("Status for leave %s changes successfully", leaveId));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<LeaveResponse>> getAllLeaves(){
         log.debug("Received get all leaves request");
 
@@ -71,5 +74,42 @@ public class LeaveController {
         log.debug("Received get leave by id request");
 
         return ResponseEntity.ok(leaveService.getLeaveById(leaveId));
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<LeaveResponse>> getByParams(
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) LeaveType type,
+            @RequestParam(required = false) LeaveStatus status,
+            @RequestParam(required = false) Integer employeeId
+    ) {
+        log.debug("Received get all leaves with params: Date {}, Type {}, Status {}, EmployeeId {}", date, type, status, employeeId);
+
+        List<LeaveResponse> fetchedLeaves;
+
+        if (date != null) {
+            fetchedLeaves = leaveService.getLeavesByDate(date);
+        } else if (type != null) {
+            fetchedLeaves = leaveService.getLeavesByType(type);
+        } else if (status != null) {
+            fetchedLeaves = leaveService.getLeavesByStatus(status);
+        } else if (employeeId != null) {
+            fetchedLeaves = leaveService.getLeavesByEmployeeId(employeeId);
+        } else {
+            fetchedLeaves = leaveService.getAllLeaves();
+        }
+
+        return ResponseEntity.ok(fetchedLeaves);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> countLeavesInMonth(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(leaveService.countLeavesInMonth(year, month));
+    }
+
+    // GET /profiles/leaves/distribution?year=2025&month=6
+    @GetMapping("/distribution")
+    public ResponseEntity<Map<LeaveType, Long>> getLeaveTypeDistributionInMonth(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(leaveService.getLeaveTypeDistributionInMonth(year, month));
     }
 }

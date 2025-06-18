@@ -11,6 +11,7 @@ import org.ilvendev.profiles.dto.EmployeeDetailResponse;
 import org.ilvendev.profiles.dto.EmployeeRequest;
 import org.ilvendev.profiles.services.EmployeeService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -63,16 +64,19 @@ public class EmployeeController {
         return ResponseEntity.ok(String.format("Employee with ID: %s updated", employeeId));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Delete an existing employee")
-    public ResponseEntity<String> deleteEmployee(@Valid @PathVariable("id") Integer employeeId){
+    public ResponseEntity<?> deleteEmployee(@Valid @PathVariable("id") Integer employeeId){
         log.debug("Received delete request with data");
 
-        employeeService.deleteEmployee(employeeId);
-
-        return ResponseEntity
-                .noContent()
-                .build();
+        try {
+            log.info("Deleting employee with id: {}", employeeId);
+            employeeService.deleteEmployee(employeeId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("Error deleting employee", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 
     // Data acquisition
@@ -94,6 +98,20 @@ public class EmployeeController {
         EmployeeDetailResponse fetchedEmployee = employeeService.getEmployeeDetail(employeeId);
 
         return ResponseEntity.ok(fetchedEmployee);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getAllEmployeesCount() {
+        long count = employeeService.countAllEmployees();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/new")
+    public ResponseEntity<Long> getNewEmployeesCount(
+            @RequestParam int year,
+            @RequestParam int month) {
+        long count = employeeService.countNewEmployeesInMonth(year, month);
+        return ResponseEntity.ok(count);
     }
 
 

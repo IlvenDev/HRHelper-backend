@@ -14,7 +14,7 @@ public class LeaveRequest {
     @NotNull(message = "Leave date cannot be null")
     private LocalDate date;
     @NotNull(message = "Leave type cannot be null")
-    @ValueOfEnum(enumClass = LeaveType.class)
+//    @ValueOfEnum(enumClass = LeaveType.class)
     private LeaveType leaveType;
     @NotNull(message = "Employee id cannot be null")
     private Integer employeeId;

@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public abstract class LeaveMapper {
 
@@ -22,6 +24,8 @@ public abstract class LeaveMapper {
     public abstract Leave toEntity(LeaveRequest request);
 
     public abstract LeaveResponse toResponse(Leave leave);
+
+    public abstract List<LeaveResponse> toResponseList(List<Leave> leaves);
 
     public Employee mapEmployeeIdToEmployee(Integer employeeId) {
         if (employeeId == null) {

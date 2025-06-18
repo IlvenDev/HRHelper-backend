@@ -4,5 +4,4 @@ public enum PaymentStatus {
     UNPAID,
     IN_PROGRESS,
     PAID,
-
 }

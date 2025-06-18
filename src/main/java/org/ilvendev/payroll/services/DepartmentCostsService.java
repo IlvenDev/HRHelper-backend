@@ -13,8 +13,11 @@ import org.ilvendev.payroll.repositories.DepartmentCostsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -101,5 +104,24 @@ public class DepartmentCostsService {
         log.info("Successfully got all costs");
 
         return costsMapper.toResponseList(fetchedCosts);
+    }
+
+    public BigDecimal getTotalCostForMonth(int year, int month) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.plusMonths(1);
+        BigDecimal sum = costsRepository.sumCostsInMonth(start, end);
+        return sum != null ? sum : BigDecimal.ZERO;
+    }
+
+    public Map<CostType, BigDecimal> getCostDistributionForMonth(int year, int month) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.plusMonths(1);
+        List<Object[]> results = costsRepository.getCostDistributionInMonth(start, end);
+
+        return results.stream()
+                .collect(Collectors.toMap(
+                        r -> (CostType) r[0],
+                        r -> (BigDecimal) r[1]
+                ));
     }
 }

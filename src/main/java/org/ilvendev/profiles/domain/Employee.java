@@ -30,20 +30,19 @@ public class Employee {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(columnDefinition = "CHAR(1)", nullable = false)
-    private Character sex;
+    @Column(nullable = false)
+    private String sex;
 
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(mappedBy = "employee", cascade = {CascadeType.ALL, CascadeType.MERGE})
     private EmergencyContact emergencyContact;
 
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(mappedBy = "employee", cascade = {CascadeType.ALL, CascadeType.MERGE})
     private EmployeeJobDetails jobDetails;
 
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(mappedBy = "employee", cascade = {CascadeType.ALL, CascadeType.MERGE})
     private EmployeeResidenceDetails residenceDetails;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
@@ -52,16 +51,5 @@ public class Employee {
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private Set<Leave> leaves = new HashSet<>();
 
-    // Might be useless if we use attendanceService.
-    public void addAttendanceTime(AttendanceTime attendanceTime) {
-        assert attendanceTimes != null;
-        attendanceTimes.add(attendanceTime);
-        attendanceTime.setEmployee(this);
-    }
 
-    public void removeAttendanceTime(AttendanceTime attendanceTime) {
-        assert attendanceTimes != null;
-        attendanceTimes.remove(attendanceTime);
-        attendanceTime.setEmployee(null);
-    }
 }

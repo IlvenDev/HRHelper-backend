@@ -10,13 +10,13 @@ import java.time.LocalTime;
 
 @Data
 public class AttendanceTimeRequest {
-    @NotBlank(message = "Start time is required")
+//    @NotBlank(message = "Start time is required")
     @PastOrPresent(message = "Start time cannot be in the future")
     private LocalTime startTime;
     @PastOrPresent(message = "End time cannot be in the future")
     private LocalTime endTime;
     @PastOrPresent(message = "Date cannot be in the future")
     private LocalDate date;
-    @NotBlank(message = "Employee is required")
-    private Employee employee;
+//    @NotBlank(message = "Employee is required")
+    private Integer employeeId;
 }

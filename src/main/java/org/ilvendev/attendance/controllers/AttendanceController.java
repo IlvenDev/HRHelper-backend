@@ -98,4 +98,10 @@ public class AttendanceController {
 
         return attendanceTimeService.getByEmployeeAndDateBetween(fetchedEmployee, startDate, endDate);
     }
+
+    @GetMapping("/hours")
+    public ResponseEntity<Double> getWorkedHoursInMonth(@RequestParam int year, @RequestParam int month) {
+        double hours = attendanceTimeService.getTotalWorkedHoursInMonth(year, month);
+        return ResponseEntity.ok(hours);
+    }
 }

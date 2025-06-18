@@ -14,9 +14,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/costs")
@@ -80,5 +82,15 @@ public class DepartmentCostsController {
         }
 
         return ResponseEntity.ok(fetchedCostsList);
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<BigDecimal> getTotalCost(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(costsService.getTotalCostForMonth(year, month));
+    }
+
+    @GetMapping("/distribution")
+    public ResponseEntity<Map<CostType, BigDecimal>> getCostDistribution(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(costsService.getCostDistributionForMonth(year, month));
     }
 }

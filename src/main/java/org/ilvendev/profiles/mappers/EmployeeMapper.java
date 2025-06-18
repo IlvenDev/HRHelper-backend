@@ -15,7 +15,7 @@ import org.mapstruct.ReportingPolicy;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface EmployeeMapper {
+public abstract class EmployeeMapper {
 
     // Main mapping from request to entity
     @Mapping(target = "id", ignore = true)
@@ -24,45 +24,53 @@ public interface EmployeeMapper {
     @Mapping(source = "jobDetails", target = "jobDetails")
     @Mapping(source = "residenceDetails", target = "residenceDetails")
     @Mapping(source = "emergencyContact", target = "emergencyContact")
-    Employee toEntity(EmployeeRequest request);
+    public abstract Employee toEntity(EmployeeRequest request);
 
     // Nested DTO → Entity mappings
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "directSupervisor", ignore = true)
     @Mapping(target = "employee", ignore = true)
-    EmployeeJobDetails toJobDetailsEntity(EmployeeJobDetailsRequest request);
+    public abstract EmployeeJobDetails toJobDetailsEntity(EmployeeJobDetailsRequest request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "employee", ignore = true)
-    EmployeeResidenceDetails toResidenceDetailsEntity(EmployeeResidenceDetailsRequest request);
+    public abstract EmployeeResidenceDetails toResidenceDetailsEntity(EmployeeResidenceDetailsRequest request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "employee", ignore = true)
-    EmergencyContact toEmergencyContactEntity(EmergencyContactRequest request);
+    public abstract EmergencyContact toEmergencyContactEntity(EmergencyContactRequest request);
 
     // Entity → DTO mappings for response models
-    EmployeeBasicResponse toBasicResponse(Employee employee);
-    List<EmployeeBasicResponse> toBasicResponseList(List<Employee> employees);
+    public abstract EmployeeBasicResponse toBasicResponse(Employee employee);
+    public abstract List<EmployeeBasicResponse> toBasicResponseList(List<Employee> employees);
 
     @Mapping(target = "emergencyContact", source = "emergencyContact")
     @Mapping(target = "jobDetails", source = "jobDetails")
     @Mapping(target = "residenceDetails", source = "residenceDetails")
-    EmployeeDetailResponse toDetailResponse(Employee employee);
+    public abstract EmployeeDetailResponse toDetailResponse(Employee employee);
 
     @Mapping(target = "emergencyContact", source = "emergencyContact")
     @Mapping(target = "jobDetails", source = "jobDetails")
     @Mapping(target = "residenceDetails", source = "residenceDetails")
     @Mapping(target = "attendanceTimes", source = "attendanceTimes")
     @Mapping(target = "leaves", source = "leaves")
-    EmployeeAdminResponse toAdminResponse(Employee employee);
+    public abstract EmployeeAdminResponse toAdminResponse(Employee employee);
 
-    EmergencyContactResponse toEmergencyContactResponse(EmergencyContact emergencyContact);
-    EmployeeJobDetailsResponse toJobDetailsResponse(EmployeeJobDetails jobDetails);
-    EmployeeResidenceDetailsResponse toResidenceDetailsResponse(EmployeeResidenceDetails residenceDetails);
+    public abstract EmergencyContactResponse toEmergencyContactResponse(EmergencyContact emergencyContact);
+    public abstract EmployeeJobDetailsResponse toJobDetailsResponse(EmployeeJobDetails jobDetails);
+    public abstract EmployeeResidenceDetailsResponse toResidenceDetailsResponse(EmployeeResidenceDetails residenceDetails);
 
-    AttendanceTimeResponse toAttendanceTimeResponse(AttendanceTime attendanceTime);
-    LeaveResponse toLeaveResponse(Leave leave);
+    @Mapping(target = "employee", source = "employee")
+    public abstract AttendanceTimeResponse toAttendanceTimeResponse(AttendanceTime attendanceTime);
+    public abstract LeaveResponse toLeaveResponse(Leave leave);
+
+    public Integer mapEmployeeToEmployeeId(Employee employee) {
+        if (employee == null) {
+            return null;
+        }
+        return employee.getId();
+    }
 
     // Uncomment if needed later
     // EmployeePaymentDetailsResponseDetail toPaymentDetailsResponse(EmployeePaymentDetails paymentDetails);

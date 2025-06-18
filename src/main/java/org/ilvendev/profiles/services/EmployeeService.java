@@ -213,4 +213,14 @@ public class EmployeeService {
                 .map(employeeMapper::toBasicResponse)
                 .collect(Collectors.toList());
     }
+
+    public long countAllEmployees() {
+        return employeeRepository.countBy();
+    }
+
+    public long countNewEmployeesInMonth(int year, int month) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.plusMonths(1);
+        return employeeRepository.countNewEmployeesInMonth(start, end);
+    }
 }

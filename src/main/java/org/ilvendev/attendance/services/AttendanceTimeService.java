@@ -13,6 +13,7 @@ import org.ilvendev.profiles.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -86,5 +87,22 @@ public class AttendanceTimeService {
 
     public List<AttendanceTimeResponse> getByEmployeeAndDateBetween(Employee employee, LocalDate startDate, LocalDate endDate){
         return attendanceTimeMapper.toResponseList(attendanceTimeRepository.findByEmployeeAndDateBetween(employee, startDate, endDate));
+    }
+
+    public long getTotalWorkedMinutesInMonth(int year, int month) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.plusMonths(1);
+
+        List<AttendanceTime> attendances = attendanceTimeRepository.findByDateBetween(start, end);
+
+        return attendances.stream()
+                .filter(a -> a.getEndTime() != null)
+                .mapToLong(a -> Duration.between(a.getStartTime(), a.getEndTime()).toMinutes())
+                .sum();
+    }
+
+    public double getTotalWorkedHoursInMonth(int year, int month) {
+        long totalMinutes = getTotalWorkedMinutesInMonth(year, month);
+        return totalMinutes / 60.0;
     }
 }

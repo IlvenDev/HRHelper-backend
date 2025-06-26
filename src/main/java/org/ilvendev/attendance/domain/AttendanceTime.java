@@ -20,6 +20,8 @@ public class AttendanceTime {
     private LocalTime startTime;
     @Column
     private LocalTime endTime;
+    @Column
+    private boolean breakTaken;
     @Column(nullable = false)
     private LocalDate date;
 

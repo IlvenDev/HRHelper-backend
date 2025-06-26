@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilvendev.profiles.domain.Employee;
 import org.ilvendev.profiles.dto.EmployeeBasicResponse;
 import org.ilvendev.profiles.dto.EmployeeDetailResponse;
+import org.ilvendev.profiles.dto.EmployeeLeaveUpdateRequest;
 import org.ilvendev.profiles.dto.EmployeeRequest;
 import org.ilvendev.profiles.services.EmployeeService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,10 +39,10 @@ public class EmployeeController {
     // When using a STRING for sex instead of character instead of correct validation it throws JSON error as it cannot deserialize. Expectig Character. Might be related either to the EmployeeRequest or there could need to be more validation in the controller.
     @PostMapping("/create")
     @Operation(summary = "Create new employee")
-    public ResponseEntity<EmployeeDetailResponse> createEmployee(@Valid @RequestBody @DateTimeFormat EmployeeRequest employeeData){
+    public ResponseEntity<EmployeeBasicResponse> createEmployee(@Valid @RequestBody @DateTimeFormat EmployeeRequest employeeData){
         log.debug("Received create request with data");
 
-        EmployeeDetailResponse createdEmployee = employeeService.createEmployee(employeeData);
+        EmployeeBasicResponse createdEmployee = employeeService.createEmployee(employeeData);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -63,6 +64,16 @@ public class EmployeeController {
 
         return ResponseEntity.ok(String.format("Employee with ID: %s updated", employeeId));
     }
+
+    @PatchMapping("/{id}/leave-days")
+    public ResponseEntity<?> updateLeaveDays(
+            @PathVariable Integer id,
+            @Valid @RequestBody EmployeeLeaveUpdateRequest request
+    ) {
+        employeeService.updateLeaveDays(id, request);
+        return ResponseEntity.ok().build();
+    }
+
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "Delete an existing employee")
@@ -92,10 +103,10 @@ public class EmployeeController {
     // Should add checking if there is such an employee
     @GetMapping("/{id}")
     @Operation(summary = "Get a detailed employee response")
-    public ResponseEntity<EmployeeDetailResponse> getEmployeeDetail(@Valid @PathVariable("id") Integer employeeId){
+    public ResponseEntity<EmployeeBasicResponse> getEmployee(@Valid @PathVariable("id") Integer employeeId){
         log.debug("Received get detail request");
 
-        EmployeeDetailResponse fetchedEmployee = employeeService.getEmployeeDetail(employeeId);
+        EmployeeBasicResponse fetchedEmployee = employeeService.getById(employeeId);
 
         return ResponseEntity.ok(fetchedEmployee);
     }

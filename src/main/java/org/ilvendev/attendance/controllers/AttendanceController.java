@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ilvendev.attendance.dto.AttendanceEditRequest;
 import org.ilvendev.attendance.dto.AttendanceTimeRequest;
 import org.ilvendev.attendance.dto.AttendanceTimeResponse;
 import org.ilvendev.attendance.services.AttendanceTimeService;
 import org.ilvendev.exceptions.resource_exceptions.ResourceNotFoundException;
 import org.ilvendev.profiles.domain.Employee;
+import org.ilvendev.profiles.dto.EmployeeBasicResponse;
 import org.ilvendev.profiles.repositories.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -50,16 +52,29 @@ public class AttendanceController {
                 .body(initializedAttendance);
     }
 
-    @PutMapping("/finalize/{id}")
+    @PatchMapping("/finalize/{id}")
     @Operation(summary = "Finalize attendance with a given ID")
     public ResponseEntity<AttendanceTimeResponse> finalizeAttendance(@PathVariable("id") Integer id,
-                                                                     @RequestParam LocalTime endTime){
+                                                                     @RequestParam LocalTime endTime,
+                                                                     @RequestParam boolean breakTaken){
         log.debug("Received attendance finalization request with ID: {}", id);
 
-        AttendanceTimeResponse finalizedAttendance = attendanceTimeService.finalizeAttendance(id, endTime);
+        AttendanceTimeResponse finalizedAttendance = attendanceTimeService.finalizeAttendance(id, endTime, breakTaken);
 
         return ResponseEntity.ok(finalizedAttendance);
     }
+
+    @PatchMapping("/edit/{id}")
+    @Operation(summary = "Edit attendance details for a given ID")
+    public ResponseEntity<AttendanceTimeResponse> editAttendance(@PathVariable("id") Integer id,
+                                                                 @RequestBody AttendanceEditRequest editRequest) {
+        log.debug("Received attendance edit request with ID: {}", id);
+
+        AttendanceTimeResponse updatedAttendance = attendanceTimeService.editAttendance(id, editRequest);
+
+        return ResponseEntity.ok(updatedAttendance);
+    }
+
 
     @GetMapping("/all")
     @Operation(summary = "Get all attendance records")
@@ -103,5 +118,18 @@ public class AttendanceController {
     public ResponseEntity<Double> getWorkedHoursInMonth(@RequestParam int year, @RequestParam int month) {
         double hours = attendanceTimeService.getTotalWorkedHoursInMonth(year, month);
         return ResponseEntity.ok(hours);
+    }
+
+    @GetMapping("/today")
+    public List<AttendanceTimeResponse> today() {
+        return attendanceTimeService.getTodayAttendances();
+    }
+
+
+    @GetMapping("/missing")
+    public List<EmployeeBasicResponse> missing(
+            @RequestParam(defaultValue = "2") int days
+    ) {
+        return attendanceTimeService.getEmployeesMissingAttendance(days);
     }
 }

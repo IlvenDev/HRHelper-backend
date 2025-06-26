@@ -8,25 +8,31 @@ import org.ilvendev.payroll.domain.EmployeePaymentDetails;
 import org.ilvendev.payroll.dto.EmployeePaymentDetailsResponseDetail;
 import org.ilvendev.profiles.domain.*;
 import org.ilvendev.profiles.dto.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public abstract class EmployeeMapper {
 
-    // Main mapping from request to entity
+    @Autowired PasswordEncoder passwordEncoder;
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "attendanceTimes", ignore = true)
     @Mapping(target = "leaves", ignore = true)
     @Mapping(source = "jobDetails", target = "jobDetails")
-    @Mapping(source = "residenceDetails", target = "residenceDetails")
-    @Mapping(source = "emergencyContact", target = "emergencyContact")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "role", target = "role")
+    @Mapping(source = "dataZatrudnienia", target = "dataZatrudnienia")
+    @Mapping(source = "dataZwolnienia", target = "dataZwolnienia")
+    @Mapping(source = "stawka", target = "stawka")
+    @Mapping(source = "wymiarPracy", target = "wymiarPracy")
+    @Mapping(source = "rodzajRozliczenia", target = "rodzajRozliczenia")
+    @Mapping(target = "staż", constant = "0")
     public abstract Employee toEntity(EmployeeRequest request);
-
-    // Nested DTO → Entity mappings
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "directSupervisor", ignore = true)
@@ -41,21 +47,22 @@ public abstract class EmployeeMapper {
     @Mapping(target = "employee", ignore = true)
     public abstract EmergencyContact toEmergencyContactEntity(EmergencyContactRequest request);
 
-    // Entity → DTO mappings for response models
+    @Mapping(source = "dostępneDniUrlopu", target = "dostępneDniUrlopu")
+    @Mapping(source = "wykorzystaneDniUrlopu", target = "wykorzystaneDniUrlopu")
     public abstract EmployeeBasicResponse toBasicResponse(Employee employee);
     public abstract List<EmployeeBasicResponse> toBasicResponseList(List<Employee> employees);
 
-    @Mapping(target = "emergencyContact", source = "emergencyContact")
-    @Mapping(target = "jobDetails", source = "jobDetails")
-    @Mapping(target = "residenceDetails", source = "residenceDetails")
-    public abstract EmployeeDetailResponse toDetailResponse(Employee employee);
+////    @Mapping(target = "emergencyContact", source = "emergencyContact")
+////    @Mapping(target = "jobDetails", source = "jobDetails")
+////    @Mapping(target = "residenceDetails", source = "residenceDetails")
+//    public abstract EmployeeDetailResponse toDetailResponse(Employee employee);
 
-    @Mapping(target = "emergencyContact", source = "emergencyContact")
-    @Mapping(target = "jobDetails", source = "jobDetails")
-    @Mapping(target = "residenceDetails", source = "residenceDetails")
-    @Mapping(target = "attendanceTimes", source = "attendanceTimes")
-    @Mapping(target = "leaves", source = "leaves")
-    public abstract EmployeeAdminResponse toAdminResponse(Employee employee);
+//    @Mapping(target = "emergencyContact", source = "emergencyContact")
+//    @Mapping(target = "jobDetails", source = "jobDetails")
+//    @Mapping(target = "residenceDetails", source = "residenceDetails")
+//    @Mapping(target = "attendanceTimes", source = "attendanceTimes")
+//    @Mapping(target = "leaves", source = "leaves")
+//    public abstract EmployeeAdminResponse toAdminResponse(Employee employee);
 
     public abstract EmergencyContactResponse toEmergencyContactResponse(EmergencyContact emergencyContact);
     public abstract EmployeeJobDetailsResponse toJobDetailsResponse(EmployeeJobDetails jobDetails);
@@ -63,7 +70,7 @@ public abstract class EmployeeMapper {
 
     @Mapping(target = "employee", source = "employee")
     public abstract AttendanceTimeResponse toAttendanceTimeResponse(AttendanceTime attendanceTime);
-    public abstract LeaveResponse toLeaveResponse(Leave leave);
+//    public abstract LeaveResponse toLeaveResponse(Leave leave);
 
     public Integer mapEmployeeToEmployeeId(Employee employee) {
         if (employee == null) {

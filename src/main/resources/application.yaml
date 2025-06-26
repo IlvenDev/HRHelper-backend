@@ -2,6 +2,8 @@
 
 server:
   port: 8888
+  tomcat:
+    relaxed-query-chars=[]:
 
 spring:
   application:
@@ -28,3 +30,4 @@ logging:
     org.ilvendev.attendance.controllers: DEBUG
     org.ilvendev.leaves.controllers: DEBUG
     org.ilvendev.payroll.controllers: DEBUG
+

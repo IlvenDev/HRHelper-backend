@@ -46,7 +46,7 @@ public class LeaveController {
                 .body(createdLeave);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("change/{id}")
     public ResponseEntity<String> changeLeaveStatus(@Valid @PathVariable("id") Integer leaveId, @Valid @RequestParam LeaveStatus newStatus){
         log.debug("Received leave status change request");
 
@@ -78,17 +78,18 @@ public class LeaveController {
 
     @GetMapping("/get")
     public ResponseEntity<List<LeaveResponse>> getByParams(
-            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
             @RequestParam(required = false) LeaveType type,
             @RequestParam(required = false) LeaveStatus status,
             @RequestParam(required = false) Integer employeeId
     ) {
-        log.debug("Received get all leaves with params: Date {}, Type {}, Status {}, EmployeeId {}", date, type, status, employeeId);
+        log.debug("Received get all leaves with params: startDate {}, endDate {}, Type {}, Status {}, EmployeeId {}", startDate, endDate, type, status, employeeId);
 
         List<LeaveResponse> fetchedLeaves;
 
-        if (date != null) {
-            fetchedLeaves = leaveService.getLeavesByDate(date);
+        if (startDate != null && endDate != null) {
+            fetchedLeaves = leaveService.getLeavesByDate(startDate, endDate);
         } else if (type != null) {
             fetchedLeaves = leaveService.getLeavesByType(type);
         } else if (status != null) {

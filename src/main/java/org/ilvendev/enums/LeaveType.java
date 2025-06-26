@@ -1,7 +1,15 @@
 package org.ilvendev.enums;
 
 public enum LeaveType {
-    SICK_LEAVE,
-    PAID_TIME_OFF,
-    UNPAID_TIME_OFF,
+    WYPOCZYNKOWY,
+    CHOROBOWY,
+    OKOLICZNOŚCIOWY,
+    SZKOLENIOWY,
+    BEZPŁATNY,
+    WYCHOWAWCZY,
+    MACIERZYŃSKI,
+    NA_POSZUKIWANIE_PRACY,
+    ODDANIE_KRWI,
+    SIŁA_WYŻSZA,
+    OPIEKUŃCZY
 }

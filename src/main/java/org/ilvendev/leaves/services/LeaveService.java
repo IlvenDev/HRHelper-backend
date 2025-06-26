@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,7 +55,7 @@ public class LeaveService {
         Leave fetchedLeave = leaveRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Leave", id.toString()));
 
-        fetchedLeave.setLeaveStatus(newStatus);
+        fetchedLeave.setStatus(newStatus);
         log.info("Changed leave status");
     }
 
@@ -81,19 +83,19 @@ public class LeaveService {
         return leaveMapper.toResponse(fetchedLeave);
     }
 
-    public List<LeaveResponse> getLeavesByDate(LocalDate date) {
-        log.debug("Fetching leaves for date {}", date);
+    public List<LeaveResponse> getLeavesByDate(LocalDate startDate, LocalDate endDate) {
+        log.debug("Fetching leaves for date {}", startDate, endDate);
 
-        List<Leave> leaves = leaveRepository.findByDate(date);
+        List<Leave> leaves = leaveRepository.findByTimeframe(startDate, endDate);
 
-        log.info("Successfully fetched leaves for date {}", date);
+        log.info("Successfully fetched leaves for date {}", startDate, endDate);
         return leaveMapper.toResponseList(leaves);
     }
 
     public List<LeaveResponse> getLeavesByStatus(LeaveStatus status) {
         log.debug("Fetching leaves with status {}", status);
 
-        List<Leave> leaves = leaveRepository.findByLeaveStatus(status);
+        List<Leave> leaves = leaveRepository.findByStatus(status);
 
         log.info("Successfully fetched leaves with status {}", status);
         return leaveMapper.toResponseList(leaves);
@@ -102,7 +104,7 @@ public class LeaveService {
     public List<LeaveResponse> getLeavesByType(LeaveType type) {
         log.debug("Fetching leaves with type {}", type);
 
-        List<Leave> leaves = leaveRepository.findByLeaveType(type);
+        List<Leave> leaves = leaveRepository.findByRodzaj(type);
 
         log.info("Successfully fetched leaves with type {}", type);
         return leaveMapper.toResponseList(leaves);
@@ -137,6 +139,22 @@ public class LeaveService {
                         r -> (Long) r[1]
                 ));
     }
+
+    public Map<LeaveType, Long> countLeaveDaysByTypes(Integer employeeId, List<LeaveType> types) {
+        List<Leave> leaves = leaveRepository.findByEmployeeIdAndRodzajInAndStatus(employeeId, types, LeaveStatus.ZATWIERDZONE);
+
+        Map<LeaveType, Long> result = new HashMap<>();
+        for (LeaveType type : types) {
+            result.put(type, 0L);
+        }
+
+        for (Leave leave : leaves) {
+            long days = ChronoUnit.DAYS.between(leave.getDataStart(), leave.getDataKoniec()) + 1;
+            result.put(leave.getRodzaj(), result.get(leave.getRodzaj()) + days);
+        }
+        return result;
+    }
+
 
 //    public List<LeaveResponse> getByDate();
 }

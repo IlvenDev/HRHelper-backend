@@ -24,6 +24,7 @@ public abstract class AttendanceTimeMapper {
     @Mapping(target = "endTime")
     @Mapping(target = "date")
     @Mapping(target = "employee", source = "employeeId", qualifiedByName = "mapIdToEmployee")
+    @Mapping(target = "breakTaken", constant = "false")
     public abstract AttendanceTime toEntity(AttendanceTimeRequest request);
 
     @Mapping(target = "id", source = "id")

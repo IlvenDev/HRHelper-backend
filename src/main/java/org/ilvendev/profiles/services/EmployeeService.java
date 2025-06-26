@@ -7,10 +7,7 @@ import org.ilvendev.exceptions.resource_exceptions.ResourceNotFoundException;
 import org.ilvendev.profiles.domain.EmergencyContact;
 import org.ilvendev.profiles.domain.EmployeeJobDetails;
 import org.ilvendev.profiles.domain.EmployeeResidenceDetails;
-import org.ilvendev.profiles.dto.EmployeeAdminResponse;
-import org.ilvendev.profiles.dto.EmployeeBasicResponse;
-import org.ilvendev.profiles.dto.EmployeeDetailResponse;
-import org.ilvendev.profiles.dto.EmployeeRequest;
+import org.ilvendev.profiles.dto.*;
 import org.ilvendev.profiles.mappers.EmployeeMapper;
 import org.ilvendev.profiles.repositories.EmployeeRepository;
 import org.ilvendev.profiles.domain.Employee;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,34 +34,51 @@ public class EmployeeService {
     // TODO: Add data validation
 
     @Transactional
-    public EmployeeDetailResponse createEmployee(EmployeeRequest employeeData) throws DuplicateResourceException {
+    public EmployeeBasicResponse createEmployee(EmployeeRequest employeeData) throws DuplicateResourceException {
         log.debug("Creating employee with data: {}", employeeData);
 
         if (employeeRepository.existsByEmail(employeeData.getEmail())) {
             throw new DuplicateResourceException("Employee", employeeData.getEmail());
         }
 
-        // Create base employee
+        // Map base employee
         Employee employee = employeeMapper.toEntity(employeeData);
 
-        // Map and link job details
-        EmployeeJobDetails jobDetails = employeeMapper.toJobDetailsEntity(employeeData.getJobDetails());
-        jobDetails.setEmployee(employee);  // 🔥 Critical line
-        employee.setJobDetails(jobDetails);
+        // Oblicz staż
+        int staz = calculateStaz(employee.getDataZatrudnienia());
+        employee.setStaż(staz);
 
-        // Map and link residence
-        EmployeeResidenceDetails residence = employeeMapper.toResidenceDetailsEntity(employeeData.getResidenceDetails());
-        residence.setEmployee(employee);  // 🔥 Critical line
-        employee.setResidenceDetails(residence);
+        // Ustaw dni urlopu
+        employee.setDostępneDniUrlopu(staz < 10 ? 20 : 26);
+        employee.setWykorzystaneDniUrlopu(0); // domyślnie
 
-        // Map and link emergency contact
-        EmergencyContact emergencyContact = employeeMapper.toEmergencyContactEntity(employeeData.getEmergencyContact());
-        emergencyContact.setEmployee(employee);  // 🔥 Critical line
-        employee.setEmergencyContact(emergencyContact);
+//        // Map and link job details
+//        EmployeeJobDetails jobDetails = employeeMapper.toJobDetailsEntity(employeeData.getJobDetails());
+//        jobDetails.setEmployee(employee);
+//        employee.setJobDetails(jobDetails);
+//
+//        // Map and link residence
+//        EmployeeResidenceDetails residence = employeeMapper.toResidenceDetailsEntity(employeeData.getResidenceDetails());
+//        residence.setEmployee(employee);
+//        employee.setResidenceDetails(residence);
+//
+//        // Map and link emergency contact
+//        EmergencyContact emergencyContact = employeeMapper.toEmergencyContactEntity(employeeData.getEmergencyContact());
+//        emergencyContact.setEmployee(employee);
+//        employee.setEmergencyContact(emergencyContact);
 
+        // Save
         Employee savedEmployee = employeeRepository.save(employee);
         log.info("Created employee with ID: {}", savedEmployee.getId());
-        return employeeMapper.toDetailResponse(savedEmployee);
+
+        return employeeMapper.toBasicResponse(savedEmployee);
+    }
+
+    private int calculateStaz(LocalDate dataZatrudnienia) {
+        if (dataZatrudnienia == null) {
+            return 0;
+        }
+        return Period.between(dataZatrudnienia, LocalDate.now()).getYears();
     }
 
 
@@ -94,6 +109,27 @@ public class EmployeeService {
     }
 
     @Transactional
+    public Employee updateLeaveDays(Integer employeeId, EmployeeLeaveUpdateRequest requestData) {
+        log.debug("Updating employee leaves with ID: {}", employeeId);
+
+        Employee existingEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> {
+                    log.error("Failed updating employee leave days - ID {} not found", employeeId);
+                    return new ResourceNotFoundException("Employee", employeeId.toString());
+                });
+
+        // Update employee fields
+        existingEmployee.setDostępneDniUrlopu(requestData.getDostępneDniUrlopu());
+        existingEmployee.setWykorzystaneDniUrlopu(requestData.getWykorzystaneDniUrlopu());
+
+        Employee updatedEmployee = employeeRepository.save(existingEmployee);
+
+        log.info("Employee leave days with ID: {} updated successfully", employeeId);
+
+        return updatedEmployee;
+    }
+
+    @Transactional
     public void deleteEmployee(Integer employeeId) throws ResourceNotFoundException{
         log.debug("Deleting employee with ID: {}", employeeId);
         if (employeeRepository.existsById(employeeId)){
@@ -109,6 +145,12 @@ public class EmployeeService {
     public Employee findById(Integer employeeId){
         return employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString()));
+    }
+
+    @Transactional
+    public EmployeeBasicResponse getById(Integer employeeId){
+        return employeeMapper.toBasicResponse(employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString())));
     }
 
     @Transactional(readOnly = true)
@@ -127,26 +169,26 @@ public class EmployeeService {
         return employeeMapper.toBasicResponse(fetchedEmployee);
     }
 
-    @Transactional(readOnly = true)
-    public EmployeeDetailResponse getEmployeeDetail(Integer employeeId) throws ResourceNotFoundException{
-        log.debug("Fetching detail employee data for ID: {}", employeeId);
-        Employee fetchedEmployee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString()));
-
-        log.info("Detail employee data fetched successfully");
-        return employeeMapper.toDetailResponse(fetchedEmployee);
-    }
+//    @Transactional(readOnly = true)
+//    public EmployeeDetailResponse getEmployeeDetail(Integer employeeId) throws ResourceNotFoundException{
+//        log.debug("Fetching detail employee data for ID: {}", employeeId);
+//        Employee fetchedEmployee = employeeRepository.findById(employeeId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString()));
+//
+//        log.info("Detail employee data fetched successfully");
+//        return employeeMapper.toDetailResponse(fetchedEmployee);
+//    }
 
 //    @PreAuthorize("hasRole('ADMIN')")
-    @Transactional(readOnly = true)
-    public EmployeeAdminResponse getEmployeeAdmin(Integer employeeId) throws ResourceNotFoundException{
-        log.debug("Fetching admin employee data for ID: {}", employeeId);
-        Employee fetchedEmployee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString()));
-
-        log.info("Admin employee data fetched successfully");
-        return employeeMapper.toAdminResponse(fetchedEmployee);
-    }
+//    @Transactional(readOnly = true)
+//    public EmployeeAdminResponse getEmployeeAdmin(Integer employeeId) throws ResourceNotFoundException{
+//        log.debug("Fetching admin employee data for ID: {}", employeeId);
+//        Employee fetchedEmployee = employeeRepository.findById(employeeId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId.toString()));
+//
+//        log.info("Admin employee data fetched successfully");
+//        return employeeMapper.toAdminResponse(fetchedEmployee);
+//    }
 
     @Transactional(readOnly = true)
     public List<EmployeeBasicResponse> getEmployeeByFullName(String name, String lastname){

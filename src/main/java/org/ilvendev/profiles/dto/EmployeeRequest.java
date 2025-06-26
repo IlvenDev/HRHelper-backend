@@ -1,11 +1,15 @@
 package org.ilvendev.profiles.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.ilvendev.enums.Role;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class EmployeeRequest {
@@ -35,6 +39,19 @@ public class EmployeeRequest {
     @Email(message = "Invalid email format")
     private String email;
 
+    private String username;
+    private String password;
+    private Role role;
+
+    private Date dataZatrudnienia;
+    private Date dataZwolnienia;
+    private BigDecimal stawka;
+    private String wymiarPracy;
+    private String rodzajRozliczenia;
+//    private int staż;
+    private Integer dostępneDniUrlopu;
+    private Integer wykorzystaneDniUrlopu;
+
     @Schema(description = "Employee's date of birth", example = "1997-11-05")
     @NotNull(message = "Date of birth is required")
     @Past(message = "Date of birth must be in the past")
@@ -45,15 +62,15 @@ public class EmployeeRequest {
     @Pattern(regexp = "[MF]", message = "Sex must be 'M' or 'F'")
     private String sex;
 
-    @NotNull(message = "Job details are required")
-    @Valid
+//    @NotNull(message = "Job details are required")
+//    @Valid
     private EmployeeJobDetailsRequest jobDetails;
-
-    @NotNull(message = "Residence details are required")
-    @Valid
-    private EmployeeResidenceDetailsRequest residenceDetails;
-
-    @NotNull(message = "Emergency contact is required")
-    @Valid
-    private EmergencyContactRequest emergencyContact;
+//
+//    @NotNull(message = "Residence details are required")
+//    @Valid
+//    private EmployeeResidenceDetailsRequest residenceDetails;
+//
+//    @NotNull(message = "Emergency contact is required")
+//    @Valid
+//    private EmergencyContactRequest emergencyContact;
 }

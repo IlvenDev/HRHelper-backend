@@ -1,12 +1,7 @@
-package org.ilvendev.logic;
+package org.ilvendev.dashboard;
 
 import lombok.RequiredArgsConstructor;
-import org.ilvendev.logic.DashboardService;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +27,22 @@ public class DashboardController {
                 .collect(Collectors.toList());
 
         return dashboardService.getMonthlySummary(year, month, holidayDates);
+    }
+
+    @GetMapping("/personal-summary/{id}")
+    public HoursSummary personalSummary(
+            @PathVariable("id") Integer employeeId,
+            @RequestParam int year,
+            @RequestParam int month,
+            @RequestParam(required = false) List<String> holidays
+    ) {
+        List<LocalDate> holidayDates = (holidays == null)
+                ? List.of()
+                : holidays.stream()
+                .map(LocalDate::parse)        // zakładamy ISO-8601, czyli "YYYY-MM-DD"
+                .collect(Collectors.toList());
+
+        return dashboardService.getPersonalSummary(employeeId, year, month, holidayDates);
     }
 }
 

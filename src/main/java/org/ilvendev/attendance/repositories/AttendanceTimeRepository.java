@@ -21,6 +21,8 @@ public interface AttendanceTimeRepository extends JpaRepository<AttendanceTime, 
 
     List<AttendanceTime> findByEmployeeAndDateBetween(Employee employee, LocalDate startDate, LocalDate endDate);
 
+    List<AttendanceTime> findByEmployeeAndDateBetweenOrderByDateAsc(Employee employee, LocalDate startDate, LocalDate endDate);
+
     List<AttendanceTime> findByDate(LocalDate date);
 
     @Query("SELECT DISTINCT a.employee.id FROM AttendanceTime a WHERE a.date BETWEEN :start AND :end")

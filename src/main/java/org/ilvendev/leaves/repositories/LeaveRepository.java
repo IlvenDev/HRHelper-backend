@@ -48,4 +48,19 @@ public interface LeaveRepository extends JpaRepository<Leave, Integer> {
             @Param("periodStart") LocalDate periodStart,
             @Param("periodEnd")   LocalDate periodEnd
     );
+
+    @Query("""
+    SELECT l FROM Leave l
+     WHERE l.status = :status
+       AND l.employee = :employee
+       AND l.dataStart <= :periodEnd
+       AND l.dataKoniec >= :periodStart
+    """)
+    List<Leave> findApprovedLeavesInPeriodForEmployee(
+            @Param("status") LeaveStatus status,
+            @Param("employee") Employee employee,
+            @Param("periodStart") LocalDate periodStart,
+            @Param("periodEnd") LocalDate periodEnd
+    );
+
 }

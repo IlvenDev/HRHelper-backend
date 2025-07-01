@@ -33,7 +33,7 @@ public class Employee {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
     @Column
     private String password;
@@ -51,7 +51,7 @@ public class Employee {
     @Column
     private String rodzajRozliczenia;
     @Column
-    private int staż;
+    private Integer staż;
     @Column
     private Integer dostępneDniUrlopu;
     @Column

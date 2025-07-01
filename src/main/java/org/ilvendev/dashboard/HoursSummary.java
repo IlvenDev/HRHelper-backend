@@ -1,5 +1,5 @@
 // src/main/java/org/ilvendev/attendance/dto/HoursSummaryDto.java
-package org.ilvendev.logic;
+package org.ilvendev.dashboard;
 
 public record HoursSummary(
         long regular,
